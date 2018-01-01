@@ -26,17 +26,14 @@
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD4H19ExlkuUSKXU9FCdqDqDG8IN2-yTCs&v=3&callback=initMap"></script>
 
     <!-- Button trigger modal -->
-    <!--button type="button" id="options" class="navbar-toggler" data-toggle="modal" data-target="#exampleModal">
-      <span class="navbar-toggler-icon"></span>
-    </button-->
-    <button type="button" class="btn btn-light btn-sm" id="options" data-toggle="modal" data-target="#exampleModal">Options</button>
+    <button type="button" class="btn btn-light btn-sm" id="options" data-toggle="modal" data-target="#modal">Search Locations</button>
 
     <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Options</h5>
+            <input type="text" class="form-control" id="search-text" placeholder="Search Locations">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -44,9 +41,6 @@
           <div class="modal-body">
             ...
           </div>
-          <!--div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          </div-->
         </div>
       </div>
     </div>
