@@ -5,7 +5,9 @@ function initMap() {
   // Constructor creates a new map.
   map = new google.maps.Map(document.getElementById('map'), {
     center: {lat: 40.7413549, lng: -74.0900000},
-    zoom: 13
+    zoom: 13,
+    mapTypeControl: false,
+    fullscreenControl: false
   });
 
   var locations = [

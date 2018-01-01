@@ -2,6 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Neighborhood Map</title>
 
     <!-- Bootstrap -->
@@ -16,34 +17,6 @@
     <link rel="stylesheet" href="css/style.css">
   </head>
   <body>
-    <nav class="navbar transparent navbar-light fixed-top">
-      <a class="navbar-brand" href="">Neighborhood Map</a>
-
-      <button class="navbar-toggler cursor-pointer" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="index.html">
-              Projects <span class="sr-only">(current)</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="about-me.html">
-              About me
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="contact.html">
-              Contact
-            </a>
-          </li>
-        </ul>
-      </div>
-    </nav>
-
     <div id="map"></div>
 
     <!-- Javascript -->
@@ -51,5 +24,31 @@
 
     <!-- Google Maps -->
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD4H19ExlkuUSKXU9FCdqDqDG8IN2-yTCs&v=3&callback=initMap"></script>
+
+    <!-- Button trigger modal -->
+    <!--button type="button" id="options" class="navbar-toggler" data-toggle="modal" data-target="#exampleModal">
+      <span class="navbar-toggler-icon"></span>
+    </button-->
+    <button type="button" class="btn btn-light btn-sm" id="options" data-toggle="modal" data-target="#exampleModal">Options</button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Options</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            ...
+          </div>
+          <!--div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div-->
+        </div>
+      </div>
+    </div>
   </body>
 </html>
