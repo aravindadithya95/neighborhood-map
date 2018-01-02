@@ -55,7 +55,7 @@ var Location = function(data) {
 
   // Create an onclick event to open an infoWindow
   this.marker.addListener('click', function() {
-    populateInfoWindow(this, infoWindow);
+    populateInfoWindow(this);
   });
 
   // Extend the boundaries of the map for each marker
@@ -78,12 +78,15 @@ var ViewModel = function() {
 
   self.filteredLocations = ko.computed(function() {
     var searchText = self.searchText().toLowerCase();
-    if (!searchText) {
-      return self.locationList();
-    }
 
     return ko.utils.arrayFilter(self.locationList(), function(location) {
-      return (location.title.toLowerCase().indexOf(searchText) != -1);
+      if (location.title.toLowerCase().indexOf(searchText) != -1) {
+        location.marker.setMap(map);
+        return true;
+      } else {
+        location.marker.setMap(null);
+        return false;
+      }
     })
   })
 };
@@ -117,7 +120,7 @@ function initMap() {
 }
 
 // This function populates the infoWindow when the marker is clicked
-function populateInfoWindow(marker, infoWindow) {
+function populateInfoWindow(marker) {
   // Check to make sure the infoWindow is not already opened on this marker
   if (infoWindow.marker != marker) {
     infoWindow.marker = marker;
@@ -126,7 +129,7 @@ function populateInfoWindow(marker, infoWindow) {
 
     // Make sure the marker property is cleared if the infoWindow is closed
     infoWindow.addListener('closeclick', function() {
-      infoWindow.setMarker = null;
+      infoWindow.marker = null;
     });
   }
 }
