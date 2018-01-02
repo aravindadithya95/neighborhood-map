@@ -53,11 +53,9 @@ var ViewModel = function() {
   var self = this;
 
   this.locationList = ko.observableArray([]);
-  this.filteredList = ko.observableArray([]);
 
   locations.forEach(function(location) {
     self.locationList.push(new Location(location));
-    self.filteredList.push(new Location(location));
   });
 }
 
