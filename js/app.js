@@ -1,4 +1,4 @@
-var map;
+var map, bounds, infoWindow;
 var locations = [
   {
     title: 'QuickChek',
@@ -36,7 +36,7 @@ var locations = [
     }
   }
 ];
-var markers = [];
+
 
 /*
  * Knockout Model
@@ -44,14 +44,30 @@ var markers = [];
 var Location = function(data) {
   this.title = data.title;
   this.location = data.location;
-}
+
+  // Create marker
+  this.marker = new google.maps.Marker({
+    map: map,
+    position: this.location,
+    title: this.title,
+    animation: google.maps.Animation.DROP
+  });
+
+  // Create an onclick event to open an infoWindow
+  this.marker.addListener('click', function() {
+    populateInfoWindow(this, infoWindow);
+  });
+
+  // Extend the boundaries of the map for each marker
+  bounds.extend(this.location);
+};
+
 
 /*
  * Knockout ViewModel
  */
 var ViewModel = function() {
   var self = this;
-
   self.locationList = ko.observableArray([]);
 
   locations.forEach(function(location) {
@@ -70,62 +86,45 @@ var ViewModel = function() {
       return (location.title.toLowerCase().indexOf(searchText) != -1);
     })
   })
+};
+
+
+function initApp() {
+  ko.applyBindings(new ViewModel());
 }
 
-ko.applyBindings(new ViewModel());
 
+/*
+ * Google Maps API
+ */
 function initMap() {
   var center = {
     lat: 40.7413549,
     lng: -74.0900000
   }
 
-  // Constructor creates a new map.
+  // Constructor creates a new map
   map = new google.maps.Map(document.getElementById('map'), {
     center: center,
     zoom: 13
   });
 
-  var largeInfoWindow = new google.maps.InfoWindow();
-  var bounds = new google.maps.LatLngBounds();
+  infoWindow = new google.maps.InfoWindow();
+  bounds = new google.maps.LatLngBounds();
 
-  // Initialize the markers array.
-  for (var i = 0; i < locations.length; i ++) {
-    // Get marker data
-    var position = locations[i].location;
-    var title = locations[i].title;
-
-    // Create marker.
-    var marker = new google.maps.Marker({
-      map: map,
-      position: position,
-      title: title,
-      animation: google.maps.Animation.DROP,
-      id: i
-    });
-
-    // Push marker into the markers array.
-    markers.push(marker);
-
-    // Create an onclick event to open an infoWindow.
-    marker.addListener('click', function() {
-      populateInfoWindow(this, largeInfoWindow);
-    });
-    bounds.extend(markers[i].position);
-  }
-
-  // Extend the boundaries of the map for each marker
-  map.fitBounds(bounds);
+  // Create Knockout bindings
+  initApp();
 }
 
-// This function populates the infoWindow when the marker is clicked.
+// This function populates the infoWindow when the marker is clicked
 function populateInfoWindow(marker, infoWindow) {
-  // Check to make sure the infoWindow is not already opened on this marker.
+  // Check to make sure the infoWindow is not already opened on this marker
   if (infoWindow.marker != marker) {
     infoWindow.marker = marker;
     infoWindow.setContent('<div>' + marker.title + '</div>');
     infoWindow.open(map, marker);
-    // Make sure the marker property is cleared if the infoWindow is closed.
+
+    // Make sure the marker property is cleared if the infoWindow is closed
     infoWindow.addListener('closeclick', function() {
       infoWindow.setMarker = null;
     });
