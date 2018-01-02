@@ -52,11 +52,24 @@ var Location = function(data) {
 var ViewModel = function() {
   var self = this;
 
-  this.locationList = ko.observableArray([]);
+  self.locationList = ko.observableArray([]);
 
   locations.forEach(function(location) {
     self.locationList.push(new Location(location));
   });
+
+  self.searchText = ko.observable('');
+
+  self.filteredLocations = ko.computed(function() {
+    var searchText = self.searchText().toLowerCase();
+    if (!searchText) {
+      return self.locationList();
+    }
+
+    return ko.utils.arrayFilter(self.locationList(), function(location) {
+      return (location.title.toLowerCase().indexOf(searchText) != -1);
+    })
+  })
 }
 
 ko.applyBindings(new ViewModel());
