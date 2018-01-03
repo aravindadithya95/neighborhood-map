@@ -10,6 +10,7 @@ var Location = function(data) {
   this.location = data.location;
   this.address = data.address;
   this.contact = data.contact;
+  this.url = data.url;
 
   // Create marker
   this.marker = new google.maps.Marker({
@@ -19,9 +20,11 @@ var Location = function(data) {
     animation: google.maps.Animation.DROP
   });
 
+  var self = this;
+
   // Create an onclick event to open an infoWindow
   this.marker.addListener('click', function() {
-    populateInfoWindow(this);
+    populateInfoWindow(self);
   });
 
   // Extend the boundaries of the map for each marker
@@ -58,7 +61,7 @@ var ViewModel = function() {
 
   self.openInfoWindow = function(data) {
     $('#modal').modal('hide');
-    populateInfoWindow(data.marker);
+    populateInfoWindow(data);
   };
 };
 
@@ -93,15 +96,17 @@ function getLocationData(center, categoryId, radius, limit) {
           lat: location.lat,
           lng: location.lng
         };
-        var formattedAddress = location['formattedAddress'];
-        var address = formattedAddress[0] + ', ' + formattedAddress[1] + ', ' + formattedAddress[2];
+        var address = location['formattedAddress'];
+        //var address = formattedAddress[0] + ', ' + formattedAddress[1] + ', ' + formattedAddress[2];
         var contact = venue['contact'].formattedPhone;
+        var url = venue['url'];
 
         locations.push({
           title: title,
           location: coord,
           address: address,
-          contact: contact
+          contact: contact,
+          url: url
         });
       });
 
@@ -137,14 +142,26 @@ function initMap() {
 }
 
 // This function populates the infoWindow when the marker is clicked
-function populateInfoWindow(marker) {
+function populateInfoWindow(location) {
+  var marker = location.marker;
   // Check to make sure the infoWindow is not already opened on this marker
   if (infoWindow.marker != marker) {
     // Start BOUNCE animation
     marker.setAnimation(google.maps.Animation.BOUNCE);
 
     infoWindow.marker = marker;
-    infoWindow.setContent('<div>' + marker.title + '</div>');
+    infoWindow.setContent(`
+      <div class="text-center">
+        <h4>` + location.title + `</h4>
+        ` + (location.contact === undefined ? '' : '<div>' + location.contact + '</div>') + `
+        ` + (location.url === undefined ? '' : '<div><a href="' + location.url + '" target="_blank">' + location.url + '</a></div>') + `
+        <br>
+        <h6>Address</h6>
+        <div>` + location.address[0] + `</div>
+        <div>` + location.address[1] + `</div>
+        <div>` + location.address[2] + `</div>
+      </div>
+    `);
     infoWindow.open(map, marker);
 
     // Make sure the marker property is cleared if the infoWindow is closed
