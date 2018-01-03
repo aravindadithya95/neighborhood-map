@@ -1,41 +1,5 @@
 var map, bounds, infoWindow;
-var locations = [
-  {
-    title: 'QuickChek',
-    location: {
-      lat: 40.743759,
-      lng: -74.155682
-    }
-  },
-  {
-    title: '5 Grains Rice',
-    location: {
-      lat: 40.745999,
-      lng: -74.158852
-    }
-  },
-  {
-    title: 'Smashburger',
-    location: {
-      lat: 40.741283,
-      lng: -74.179654
-    }
-  },
-  {
-    title: 'The Oculus',
-    location: {
-      lat: 40.711399,
-      lng: -74.011146
-    }
-  },
-  {
-    title: 'Newport Centre',
-    location: {
-      lat: 40.727173,
-      lng: -74.036209
-    }
-  }
-];
+var locations = [];
 
 
 /*
@@ -44,6 +8,8 @@ var locations = [
 var Location = function(data) {
   this.title = data.title;
   this.location = data.location;
+  this.address = data.address;
+  this.contact = data.contact;
 
   // Create marker
   this.marker = new google.maps.Marker({
@@ -102,6 +68,52 @@ function initApp() {
 }
 
 
+/**
+ * Foursquare API
+ */
+function getLocationData(center, categoryId, radius, limit) {
+  var url = 'https://api.foursquare.com/v2/venues/search' +
+            '?ll=' + center.lat + ',' + center.lng +
+            '&categoryId=' + categoryId +
+            '&radius=' + radius +
+            '&limit=' + limit +
+            '&v=20180103&client_id=IP24XPFE4MUOWRQT0UDC2L2B3MYKYKAENTQQ2PENNYYPSOKU&client_secret=4M1EQAFNEPBKR34K1A5WNLWOVC3ZZREF2CQ1B1TDHXD1DBNZ';
+
+  $.ajax({
+    type: 'GET',
+    url: url,
+    dataType: 'json',
+    success: function(response) {
+      venues = response['response']['venues'];
+      console.log(venues);
+      venues.forEach(function (venue) {
+        var title = venue['name'];
+        var location = venue['location'];
+        var coord = {
+          lat: location.lat,
+          lng: location.lng
+        };
+        var formattedAddress = location['formattedAddress'];
+        var address = formattedAddress[0] + ', ' + formattedAddress[1] + ', ' + formattedAddress[2];
+        var contact = venue['contact'].formattedPhone;
+
+        locations.push({
+          title: title,
+          location: coord,
+          address: address,
+          contact: contact
+        });
+      });
+
+      // Initialize Knockout bindings
+      initApp();
+
+      // Extend the boundaries of the map for each marker
+      map.fitBounds(bounds);
+    }
+  });
+}
+
 /*
  * Google Maps API
  */
@@ -120,11 +132,8 @@ function initMap() {
   infoWindow = new google.maps.InfoWindow();
   bounds = new google.maps.LatLngBounds();
 
-  // Create Knockout bindings
-  initApp();
-
-  // Extend the boundaries of the map for each marker
-  map.fitBounds(bounds);
+  // Asynchronously get Foursquare data
+  getLocationData(center, '4bf58dd8d48988d147941735', 6000, 30);
 }
 
 // This function populates the infoWindow when the marker is clicked
