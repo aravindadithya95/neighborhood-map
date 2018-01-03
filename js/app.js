@@ -99,6 +99,7 @@ var ViewModel = function() {
 
 function initApp() {
   ko.applyBindings(new ViewModel());
+  map.fitBounds(bounds);
 }
 
 
