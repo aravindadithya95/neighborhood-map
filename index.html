@@ -35,7 +35,7 @@
           <div class="modal-body">
             <div class="text-center">
               <ul data-bind="foreach: filteredLocations" class="list-group">
-                <li data-bind="text: title" class="list-group-item list-group-item-action pointer"></li>
+                <li data-bind="text: title, click: $parent.openInfoWindow" class="list-group-item list-group-item-action pointer"></li>
               </ul>
             </div>
           </div>

@@ -87,8 +87,13 @@ var ViewModel = function() {
         location.marker.setMap(null);
         return false;
       }
-    })
-  })
+    });
+  });
+
+  self.openInfoWindow = function(data) {
+    $('#modal').modal('hide');
+    populateInfoWindow(data.marker);
+  };
 };
 
 
