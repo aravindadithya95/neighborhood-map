@@ -99,7 +99,6 @@ var ViewModel = function() {
 
 function initApp() {
   ko.applyBindings(new ViewModel());
-  map.fitBounds(bounds);
 }
 
 
@@ -123,6 +122,9 @@ function initMap() {
 
   // Create Knockout bindings
   initApp();
+
+  // Extend the boundaries of the map for each marker
+  map.fitBounds(bounds);
 }
 
 // This function populates the infoWindow when the marker is clicked
