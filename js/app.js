@@ -151,7 +151,7 @@ function populateInfoWindow(location) {
 
     infoWindow.marker = marker;
     infoWindow.setContent(`
-      <div class="text-center">
+      <div>
         <h4>` + location.title + `</h4>
         ` + (location.contact === undefined ? '' : '<div>' + location.contact + '</div>') + `
         ` + (location.url === undefined ? '' : '<div><a href="' + location.url + '" target="_blank">' + location.url + '</a></div>') + `
