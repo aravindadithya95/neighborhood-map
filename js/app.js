@@ -131,6 +131,9 @@ function initMap() {
 function populateInfoWindow(marker) {
   // Check to make sure the infoWindow is not already opened on this marker
   if (infoWindow.marker != marker) {
+    // Start BOUNCE animation
+    marker.setAnimation(google.maps.Animation.BOUNCE);
+
     infoWindow.marker = marker;
     infoWindow.setContent('<div>' + marker.title + '</div>');
     infoWindow.open(map, marker);
@@ -139,5 +142,10 @@ function populateInfoWindow(marker) {
     infoWindow.addListener('closeclick', function() {
       infoWindow.marker = null;
     });
+
+    // Set timeout for animation
+    setTimeout(function() {
+      marker.setAnimation(null);
+    }, 700);
   }
 }
