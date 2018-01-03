@@ -16,3 +16,10 @@ button {
 .pointer {
   cursor: pointer;
 }
+
+#logo-fs {
+  position: fixed;
+  width: 110px;
+  left: 0;
+  bottom: 30px;
+}
