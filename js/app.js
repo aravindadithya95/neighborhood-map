@@ -4,6 +4,8 @@ var locations = [];
 
 /*
  * Knockout Model
+ * @constructor
+ * @param {object} data - Object that contains location data
  */
 var Location = function(data) {
   this.title = data.title;
@@ -87,18 +89,18 @@ function getLocationData(center, categoryId, radius, limit) {
     url: url,
     dataType: 'json',
     success: function(response) {
-      venues = response['response']['venues'];
+      var venues = response.response.venues;
       venues.forEach(function (venue) {
-        var title = venue['name'];
-        var location = venue['location'];
+        var title = venue.name;
+        var location = venue.location;
         var coord = {
           lat: location.lat,
           lng: location.lng
         };
-        var address = location['formattedAddress'];
+        var address = location.formattedAddress;
         //var address = formattedAddress[0] + ', ' + formattedAddress[1] + ', ' + formattedAddress[2];
-        var contact = venue['contact'].formattedPhone;
-        var url = venue['url'];
+        var contact = venue.contact.formattedPhone;
+        var url = venue.url;
 
         locations.push({
           title: title,
@@ -116,7 +118,7 @@ function getLocationData(center, categoryId, radius, limit) {
       map.fitBounds(bounds);
     }
   }).fail(function() {
-    alert("There was an error when trying to access the Foursquare API. Try reloading the page.");
+    alert('There was an error when trying to access the Foursquare API. Try reloading the page.');
   });
 }
 
@@ -127,7 +129,7 @@ function initMap() {
   var center = {
     lat: 40.7413549,
     lng: -74.0900000
-  }
+  };
 
   // Constructor creates a new map
   map = new google.maps.Map(document.getElementById('map'), {
@@ -143,7 +145,7 @@ function initMap() {
 }
 
 function mapError() {
-  alert("There was an error when trying to access the Google Maps API. Try reloading the page.");
+  alert('There was an error when trying to access the Google Maps API. Try reloading the page.');
 }
 
 // This function populates the infoWindow when the marker is clicked
