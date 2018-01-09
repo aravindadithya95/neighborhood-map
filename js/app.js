@@ -142,6 +142,10 @@ function initMap() {
   getLocationData(center, '4bf58dd8d48988d147941735', 6000, 30);
 }
 
+function mapError() {
+  alert("There was an error when trying to access the Google Maps API. Try reloading the page.");
+}
+
 // This function populates the infoWindow when the marker is clicked
 function populateInfoWindow(location) {
   var marker = location.marker;
