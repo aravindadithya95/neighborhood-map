@@ -88,7 +88,6 @@ function getLocationData(center, categoryId, radius, limit) {
     dataType: 'json',
     success: function(response) {
       venues = response['response']['venues'];
-      console.log(venues);
       venues.forEach(function (venue) {
         var title = venue['name'];
         var location = venue['location'];
@@ -116,6 +115,8 @@ function getLocationData(center, categoryId, radius, limit) {
       // Extend the boundaries of the map for each marker
       map.fitBounds(bounds);
     }
+  }).fail(function() {
+    alert("There was an error when trying to access the Foursquare API. Try reloading the page.");
   });
 }
 
